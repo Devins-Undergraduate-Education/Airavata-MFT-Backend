@@ -1,5 +1,7 @@
 const express = require('express');
 var cors = require('cors');
+import { StorageCommonServiceClient } from 'proto/generated/org/apache/airavata/mft/resource/stubs/storage/common/StorageCommonService';
+
 
 const app = express();
 const port = 5500;
