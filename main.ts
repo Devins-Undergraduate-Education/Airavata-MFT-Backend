@@ -1,14 +1,12 @@
+// To run this file, do: `npx tsx main.ts`
+// You need: `npm i -D tsx`
+
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 const express = require('express');
-// import { app } from 'express';
-
-// let express = ec.express();
 var cors = require('cors');
 import { StorageCommonServiceClient } from './proto/generated/org/apache/airavata/mft/resource/stubs/storage/common/StorageCommonService';
-
-// const sc = require('proto/generated/org/apache/airavata/mft/resource/stubs/storage/common/StorageCommonService');
 
 const app = express();
 const port = 5500;
