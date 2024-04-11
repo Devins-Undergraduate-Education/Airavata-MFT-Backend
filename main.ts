@@ -3,11 +3,11 @@
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
-
 const express = require('express');
 var cors = require('cors');
 import { StorageCommonServiceClient } from './proto/generated/org/apache/airavata/mft/resource/stubs/storage/common/StorageCommonService';
 
+import { StorageCommonServiceDefinition } from "./proto/generated/org/apache/airavata/mft/resource/stubs/storage/common/StorageCommonService";
 const app = express();
 const port = 5500;
 const allowedOrigins = ["http://localhost:3000"];
@@ -15,13 +15,11 @@ const allowedOrigins = ["http://localhost:3000"];
 app.use(cors());
 
 app.use(cors({
-    origin: function (origin, callback)
-    {
+    origin: function (origin, callback) {
         // allow requests with no origin 
         // (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1)
-        {
+        if (allowedOrigins.indexOf(origin) === -1) {
             var msg = 'The CORS policy for this site does not ' +
                 'allow access from the specified Origin.';
             return callback(new Error(msg), false);
@@ -30,20 +28,26 @@ app.use(cors({
     }
 }));
 
-app.get('/list-storages', (req, res) =>
-{
+app.get('/', (req, res) => {
+    res.json({
+        message: "You've reached te MFT API!"
+    });
+});
+
+app.get('/list-storages', (req, res) => {
     console.log(req.headers.currentpath);
     res.json({
         message: 'Hello Worffld!'
     });
 });
 
-app.listen(port, () =>
-{
+app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
 
 
 let sampleVar: StorageCommonServiceClient;
+
+// sampleVar = InstanceType<typeof StorageCommonServiceClient>()
 // sampleVar = new StorageCommonServiceClient('localhost', 50051);
 console.log(sampleVar)
