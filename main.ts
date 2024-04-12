@@ -8,10 +8,7 @@ import {loadSync} from "@grpc/proto-loader";
 import {loadPackageDefinition, ChannelCredentials, GrpcObject} from "@grpc/grpc-js";
 import lodash from 'lodash';
 const {get} = lodash;
-
 var cors = require('cors');
-import client from './client';
-import { StorageListRequest } from './proto/StorageCommon_pb.d';
 
 const app = express();
 const port = 5500;
