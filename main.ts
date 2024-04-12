@@ -4,13 +4,30 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const express = require('express');
+import {loadSync} from "@grpc/proto-loader";
+import {loadPackageDefinition, ChannelCredentials, GrpcObject} from "@grpc/grpc-js";
+import lodash from 'lodash';
+const {get} = lodash;
 var cors = require('cors');
-import { StorageCommonServiceClient } from './proto/generated/org/apache/airavata/mft/resource/stubs/storage/common/StorageCommonService';
 
-import { StorageCommonServiceDefinition } from "./proto/generated/org/apache/airavata/mft/resource/stubs/storage/common/StorageCommonService";
 const app = express();
 const port = 5500;
 const allowedOrigins = ["http://localhost:3000"];
+
+var PROTO_PATH = 'proto/StorageCommon.proto';
+
+const packageDefinition = loadSync(PROTO_PATH, {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    arrays: true,
+    defaults: true,
+    oneofs: true,
+});
+
+var proto = loadPackageDefinition(packageDefinition)
+const Service = get(proto, "org.apache.airavata.mft.resource.stubs.storage.common.StorageCommonService");
+const serviceClient = new Service("localhost:7003", ChannelCredentials.createInsecure());
 
 app.use(cors());
 
@@ -36,18 +53,15 @@ app.get('/', (req, res) => {
 
 app.get('/list-storages', (req, res) => {
     console.log(req.headers.currentpath);
-    res.json({
-        message: 'Hello Worffld!'
+    serviceClient.listStorages({}, (err, resp) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(resp);
+        }
     });
 });
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
-
-
-let sampleVar: StorageCommonServiceClient;
-
-// sampleVar = InstanceType<typeof StorageCommonServiceClient>()
-// sampleVar = new StorageCommonServiceClient('localhost', 50051);
-console.log(sampleVar)
