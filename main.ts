@@ -15,6 +15,8 @@ const port = 5500;
 const allowedOrigins = ["http://localhost:3000"];
 
 var PROTO_PATH = 'proto/StorageCommon.proto';
+var LOCAL_LIST_PROTO_PATH = 'proto/local/LocalStorageService.proto';
+var TRANSFER_API_PROTO_PATH = 'proto/MFTTransferApi.proto';
 
 const packageDefinition = loadSync(PROTO_PATH, {
     keepCase: true,
@@ -29,6 +31,39 @@ var proto = loadPackageDefinition(packageDefinition)
 const Service = get(proto, "org.apache.airavata.mft.resource.stubs.storage.common.StorageCommonService");
 const serviceClient = new Service("localhost:7003", ChannelCredentials.createInsecure());
 
+const transferApiPackageDefinition = loadSync(TRANSFER_API_PROTO_PATH, {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    arrays: true,
+    defaults: true,
+    oneofs: true,
+});
+
+var transferApiProto = loadPackageDefinition(transferApiPackageDefinition)
+const TransferService = get(proto, "org.apache.airavata.mft.api.service");
+const TransferServiceClient = new TransferService("localhost:7003", ChannelCredentials.createInsecure());
+
+
+
+
+// const localListPackageDefinition = loadSync(LOCAL_LIST_PROTO_PATH, {
+//     keepCase: true,
+//     longs: String,
+//     enums: String,
+//     arrays: true,
+//     defaults: true,
+//     oneofs: true,
+// });
+
+// var localListProto = loadPackageDefinition(localListPackageDefinition)
+// const localListService = get(localListProto, "org.apache.airavata.mft.resource.service.local.LocalStorageService"); // the second argument needs to match the package name in the proto file
+ 
+// console.log(localListService);
+// const localListServiceClient = new localListService("localhost:7003", ChannelCredentials.createInsecure()); 
+
+
+
 app.use(cors());
 
 app.use(cors({
@@ -37,8 +72,7 @@ app.use(cors({
         // (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         if (allowedOrigins.indexOf(origin) === -1) {
-            var msg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
+            var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
             return callback(new Error(msg), false);
         }
         return callback(null, true);
@@ -52,7 +86,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/list-storages', (req, res) => {
-    console.log(req.headers.currentpath);
     serviceClient.listStorages({}, (err, resp) => {
         if (err) {
             res.json(err);
@@ -62,6 +95,36 @@ app.get('/list-storages', (req, res) => {
     });
 });
 
+app.get("/list-local-storages", (req, res) => {
+    localListServiceClient.listLocalStorage({}, (err, resp) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(resp);
+        }
+    });
+});
+
+// app.get('/list-storages/:storageId', (req, res) => {
+//     serviceClient.getStorage({storageId: req.params.storageId}, (err, resp) => {
+//         if (err) {
+//             res.json(err);
+//         } else {
+//             res.json(resp);
+//         }
+//     });
+// });
+
+app.get('/list/:storageId', (req, res) => {
+    const pathWithinStorage = req.query.pathWithinStorage;
+
+    res.json({
+        'storageId': req.params.storageId,
+        'pathWithinStorage': pathWithinStorage
+    })
+});
+
+
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`MFT backend listening on port ${port}`);
 });
