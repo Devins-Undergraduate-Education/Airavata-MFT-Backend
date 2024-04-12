@@ -16,7 +16,7 @@ const allowedOrigins = ["http://localhost:3000"];
 
 var PROTO_PATH = 'proto/StorageCommon.proto';
 var LOCAL_LIST_PROTO_PATH = 'proto/local/LocalStorageService.proto';
-var TRANSFER_API_PROTO_PATH = 'proto/MFTTransferApi.proto';
+var TRANSFER_API_PROTO_PATH = 'proto/api/stub/src/main/proto/MFTTransferApi.proto';
 
 const packageDefinition = loadSync(PROTO_PATH, {
     keepCase: true,

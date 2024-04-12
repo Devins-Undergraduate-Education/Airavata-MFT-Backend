@@ -15,38 +15,49 @@
  * limitations under the License.
  */
 
- syntax = "proto3";
+syntax = "proto3";
 
- option java_multiple_files = true;
- package org.apache.airavata.mft.common;
- 
- message UserTokenAuth {
-     string token = 1;
- }
- 
- message PasswordAuth {
-     string userName = 1;
-     string password = 2;
- }
- 
- message AgentAuth {
-     string token = 1;
-     string agentId = 2;
-     string agentSecret = 3;
- }
- 
- message DelegateAuth {
-     string userId = 1;
-     string clientId = 2;
-     string clientSecret = 3;
-     map<string, string> properties = 4;
- }
- 
- message AuthToken {
-     oneof authMechanism {
-         UserTokenAuth userTokenAuth = 1;
-         AgentAuth agentAuth = 2;
-         DelegateAuth delegateAuth = 3;
-         PasswordAuth passwordAuth = 4;
-     }
- }
+option java_multiple_files = true;
+package org.apache.airavata.mft.resource.stubs.box.storage;
+
+message BoxStorage {
+    string storageId = 1;
+    string name = 2;
+}
+
+message BoxStorageListRequest {
+    int32 offset = 1;
+    int32 limit = 2;
+}
+
+message BoxStorageListResponse {
+    repeated BoxStorage storages = 1;
+}
+
+message BoxStorageGetRequest {
+    string storageId = 1;
+}
+
+message BoxStorageCreateRequest {
+    string storageId = 1;
+    string name = 2;
+}
+
+message BoxStorageUpdateRequest {
+    string storageId = 1;
+    string name = 2;
+}
+
+message BoxStorageUpdateResponse {
+    string storageId = 1;
+}
+
+message BoxStorageDeleteRequest {
+    string storageId = 1;
+}
+
+message BoxStorageDeleteResponse {
+    bool status = 1;
+}
+
+
