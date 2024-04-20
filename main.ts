@@ -15,7 +15,6 @@ const port = 5500;
 const allowedOrigins = ["http://localhost:3000"];
 
 var PROTO_PATH = 'proto/StorageCommon.proto';
-var LOCAL_LIST_PROTO_PATH = 'proto/local/LocalStorageService.proto';
 var TRANSFER_API_PROTO_PATH = 'proto/api/stub/src/main/proto/MFTTransferApi.proto';
 
 const packageDefinition = loadSync(PROTO_PATH, {
@@ -41,27 +40,8 @@ const transferApiPackageDefinition = loadSync(TRANSFER_API_PROTO_PATH, {
 });
 
 var transferApiProto = loadPackageDefinition(transferApiPackageDefinition)
-const TransferService = get(proto, "org.apache.airavata.mft.api.service");
+const TransferService = get(transferApiProto, "org.apache.airavata.mft.api.service.MFTTransferService");
 const TransferServiceClient = new TransferService("localhost:7003", ChannelCredentials.createInsecure());
-
-
-
-
-// const localListPackageDefinition = loadSync(LOCAL_LIST_PROTO_PATH, {
-//     keepCase: true,
-//     longs: String,
-//     enums: String,
-//     arrays: true,
-//     defaults: true,
-//     oneofs: true,
-// });
-
-// var localListProto = loadPackageDefinition(localListPackageDefinition)
-// const localListService = get(localListProto, "org.apache.airavata.mft.resource.service.local.LocalStorageService"); // the second argument needs to match the package name in the proto file
- 
-// console.log(localListService);
-// const localListServiceClient = new localListService("localhost:7003", ChannelCredentials.createInsecure()); 
-
 
 
 app.use(cors());
@@ -95,33 +75,46 @@ app.get('/list-storages', (req, res) => {
     });
 });
 
-app.get("/list-local-storages", (req, res) => {
-    localListServiceClient.listLocalStorage({}, (err, resp) => {
-        if (err) {
-            res.json(err);
-        } else {
-            res.json(resp);
-        }
-    });
-});
+app.get('/list-storages/:storageId', (req, res) => {
 
-// app.get('/list-storages/:storageId', (req, res) => {
-//     serviceClient.getStorage({storageId: req.params.storageId}, (err, resp) => {
-//         if (err) {
-//             res.json(err);
-//         } else {
-//             res.json(resp);
-//         }
-//     });
-// });
+    const storageId = req.params.storageId;
+    const storageType = req.headers.storagetype;
+    const path = req.headers.path;
 
-app.get('/list/:storageId', (req, res) => {
-    const pathWithinStorage = req.query.pathWithinStorage;
-
-    res.json({
-        'storageId': req.params.storageId,
-        'pathWithinStorage': pathWithinStorage
-    })
+    if (storageType === "LOCAL") {
+        // the secretID is just a blank string for local storage
+        TransferServiceClient.resourceMetadata({"idRequest" :{
+            "resourcePath": path,
+            "storageId": storageId,
+            "secretId": "",
+            "recursiveSearch": true,
+        }}, (err, resp) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.json(resp);
+            }
+        });
+    } else {
+        serviceClient.getSecretForStorage({"storageId": storageId}, (err, resp) => {
+            if (err) {
+                res.json(err);
+            } else {
+                const secretId = resp.secretId;
+                TransferServiceClient.resourceMetadata({"idRequest" :{
+                    "resourcePath": path,
+                    "storageId": storageId,
+                    "secretId": secretId,
+                    "recursiveSearch": true,
+                }}, (err, resp) => {
+                    if (err) {
+                        res.json(err);
+                    } else {
+                        res.json(resp);
+                    }
+                });
+            }});
+    }
 });
 
 

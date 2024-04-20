@@ -20,58 +20,58 @@ syntax = "proto3";
 option java_multiple_files = true;
 package org.apache.airavata.mft.agent.stub;
 
-import "azure/AzureStorage.proto";
-import "box/BoxStorage.proto";
-import "dropbox/DropboxStorage.proto";
-import "ftp/FTPStorage.proto";
-import "gcs/GCSStorage.proto";
-import "local/LocalStorage.proto";
-import "odata/ODataStorage.proto";
-import "s3/S3Storage.proto";
-import "scp/SCPStorage.proto";
-import "swift/SwiftStorage.proto";
-import "http/HTTPStorage.proto";
+// import "azure/AzureStorage.proto";
+// import "box/BoxStorage.proto";
+// import "dropbox/DropboxStorage.proto";
+// import "ftp/FTPStorage.proto";
+// import "gcs/GCSStorage.proto";
+// import "local/LocalStorage.proto";
+// import "odata/ODataStorage.proto";
+// import "s3/S3Storage.proto";
+// import "scp/SCPStorage.proto";
+// import "swift/SwiftStorage.proto";
+// import "http/HTTPStorage.proto";
 
-import "azure/AzureCredential.proto";
-import "box/BoxCredential.proto";
-import "dropbox/DropboxCredential.proto";
-import "ftp/FTPCredential.proto";
-import "gcs/GCSCredential.proto";
-import "odata/ODataCredential.proto";
-import "s3/S3Credential.proto";
-import "scp/SCPCredential.proto";
-import "swift/SwiftCredential.proto";
-import "http/HttpCredential.proto";
+// import "azure/AzureCredential.proto";
+// import "box/BoxCredential.proto";
+// import "dropbox/DropboxCredential.proto";
+// import "ftp/FTPCredential.proto";
+// import "gcs/GCSCredential.proto";
+// import "odata/ODataCredential.proto";
+// import "s3/S3Credential.proto";
+// import "scp/SCPCredential.proto";
+// import "swift/SwiftCredential.proto";
+// import "http/HttpCredential.proto";
 
 message StorageWrapper {
-    oneof storage {
-        org.apache.airavata.mft.resource.stubs.azure.storage.AzureStorage azure = 1;
-        org.apache.airavata.mft.resource.stubs.box.storage.BoxStorage box = 2;
-        org.apache.airavata.mft.resource.stubs.dropbox.storage.DropboxStorage dropbox = 3;
-        org.apache.airavata.mft.resource.stubs.ftp.storage.FTPStorage ftp = 4;
-        org.apache.airavata.mft.resource.stubs.gcs.storage.GCSStorage gcs = 5;
-        org.apache.airavata.mft.resource.stubs.local.storage.LocalStorage local = 6;
-        org.apache.airavata.mft.resource.stubs.odata.storage.ODataStorage odata = 7;
-        org.apache.airavata.mft.resource.stubs.s3.storage.S3Storage s3 = 8;
-        org.apache.airavata.mft.resource.stubs.scp.storage.SCPStorage scp = 9;
-        org.apache.airavata.mft.resource.stubs.swift.storage.SwiftStorage swift = 10;
-        org.apache.airavata.mft.resource.stubs.http.storage.HTTPStorage http = 11;
-    }
+    // oneof storage {
+    //     org.apache.airavata.mft.resource.stubs.azure.storage.AzureStorage azure = 1;
+    //     org.apache.airavata.mft.resource.stubs.box.storage.BoxStorage box = 2;
+    //     org.apache.airavata.mft.resource.stubs.dropbox.storage.DropboxStorage dropbox = 3;
+    //     org.apache.airavata.mft.resource.stubs.ftp.storage.FTPStorage ftp = 4;
+    //     org.apache.airavata.mft.resource.stubs.gcs.storage.GCSStorage gcs = 5;
+    //     org.apache.airavata.mft.resource.stubs.local.storage.LocalStorage local = 6;
+    //     org.apache.airavata.mft.resource.stubs.odata.storage.ODataStorage odata = 7;
+    //     org.apache.airavata.mft.resource.stubs.s3.storage.S3Storage s3 = 8;
+    //     org.apache.airavata.mft.resource.stubs.scp.storage.SCPStorage scp = 9;
+    //     org.apache.airavata.mft.resource.stubs.swift.storage.SwiftStorage swift = 10;
+    //     org.apache.airavata.mft.resource.stubs.http.storage.HTTPStorage http = 11;
+    // }
 }
 
 message SecretWrapper {
-    oneof secret {
-        org.apache.airavata.mft.credential.stubs.azure.AzureSecret azure = 1;
-        org.apache.airavata.mft.credential.stubs.box.BoxSecret box = 2;
-        org.apache.airavata.mft.credential.stubs.dropbox.DropboxSecret dropbox = 3;
-        org.apache.airavata.mft.credential.stubs.ftp.FTPSecret ftp = 4;
-        org.apache.airavata.mft.credential.stubs.gcs.GCSSecret gcs = 5;
-        org.apache.airavata.mft.credential.stubs.odata.ODataSecret odata = 6;
-        org.apache.airavata.mft.credential.stubs.s3.S3Secret s3 = 7;
-        org.apache.airavata.mft.credential.stubs.scp.SCPSecret scp = 8;
-        org.apache.airavata.mft.credential.stubs.swift.SwiftSecret swift = 9;
-        org.apache.airavata.mft.credential.stubs.http.HTTPSecret http = 10;
-    }
+    // oneof secret {
+    //     org.apache.airavata.mft.credential.stubs.azure.AzureSecret azure = 1;
+    //     org.apache.airavata.mft.credential.stubs.box.BoxSecret box = 2;
+    //     org.apache.airavata.mft.credential.stubs.dropbox.DropboxSecret dropbox = 3;
+    //     org.apache.airavata.mft.credential.stubs.ftp.FTPSecret ftp = 4;
+    //     org.apache.airavata.mft.credential.stubs.gcs.GCSSecret gcs = 5;
+    //     org.apache.airavata.mft.credential.stubs.odata.ODataSecret odata = 6;
+    //     org.apache.airavata.mft.credential.stubs.s3.S3Secret s3 = 7;
+    //     org.apache.airavata.mft.credential.stubs.scp.SCPSecret scp = 8;
+    //     org.apache.airavata.mft.credential.stubs.swift.SwiftSecret swift = 9;
+    //     org.apache.airavata.mft.credential.stubs.http.HTTPSecret http = 10;
+    // }
 }
 
 message EndpointPaths {
