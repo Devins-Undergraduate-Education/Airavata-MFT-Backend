@@ -1,4 +1,4 @@
-# Backend API for MFT User Interface
+# Apache Airavata MFT Backend UI
 
 **Frontend Code:** https://github.com/Devins-Undergraduate-Education/Airavata-MFT-Frontend
 
