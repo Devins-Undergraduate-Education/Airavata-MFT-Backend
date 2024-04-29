@@ -6,7 +6,7 @@
 
 --- 
 
-### Running this code
+### How to
 1. Clone the repository into a project folder<br>
 `git clone https://github.com/Devins-Undergraduate-Education/Airavata-MFT-Backend`
 
