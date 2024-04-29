@@ -18,7 +18,7 @@ git clone https://github.com/Devins-Undergraduate-Education/Airavata-MFT-Backend
 
 2. Navigate into project directory
 ```
-cd Airavata-MFT-Frontend
+cd Airavata-MFT-Backend
 ```
 
 3. Install dependencies:
