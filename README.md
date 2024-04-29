@@ -31,4 +31,4 @@ npx tsx main.ts
 ``` 
 *MFT Backend is set up after `MFT backend listening on port ####` is displayed.*<br><br>
 
-<br><br><br>*By: Ganning Xu*
+<br><br><br>*Contributions from Ganning Xu aided this project's development - we are thankful!*
