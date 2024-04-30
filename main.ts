@@ -2,46 +2,40 @@
 // You need: `npm i -D tsx`
 
 import { createRequire } from "module";
+import {loadSync} from "@grpc/proto-loader";
+import {loadPackageDefinition, ChannelCredentials} from "@grpc/grpc-js";
+import lodash from 'lodash';
+
 const require = createRequire(import.meta.url);
 const express = require('express');
-import {loadSync} from "@grpc/proto-loader";
-import {loadPackageDefinition, ChannelCredentials, GrpcObject} from "@grpc/grpc-js";
-import lodash from 'lodash';
 const {get} = lodash;
-var cors = require('cors');
-
 const app = express();
 const port = 5500;
 const allowedOrigins = ["http://localhost:3000"];
+var cors = require('cors');
+const PROTO_PATH = 'proto/StorageCommon.proto';
+const TRANSFER_API_PROTO_PATH = 'proto/api/stub/src/main/proto/MFTTransferApi.proto';
 
-var PROTO_PATH = 'proto/StorageCommon.proto';
-var TRANSFER_API_PROTO_PATH = 'proto/api/stub/src/main/proto/MFTTransferApi.proto';
+// Load proto files and create service clients
+const loadProto = (path) => {
+    const packageDefinition = loadSync(path, {
+        keepCase: true,
+        longs: String,
+        enums: String,
+        arrays: true,
+        defaults: true,
+        oneofs: true,
+    });
+    return loadPackageDefinition(packageDefinition);
+};
 
-const packageDefinition = loadSync(PROTO_PATH, {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    arrays: true,
-    defaults: true,
-    oneofs: true,
-});
+const proto = loadProto(PROTO_PATH);
+const Service = get(proto, 'org.apache.airavata.mft.resource.stubs.storage.common.StorageCommonService');
+const serviceClient = new Service('localhost:7003', ChannelCredentials.createInsecure());
 
-var proto = loadPackageDefinition(packageDefinition)
-const Service = get(proto, "org.apache.airavata.mft.resource.stubs.storage.common.StorageCommonService");
-const serviceClient = new Service("localhost:7003", ChannelCredentials.createInsecure());
-
-const transferApiPackageDefinition = loadSync(TRANSFER_API_PROTO_PATH, {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    arrays: true,
-    defaults: true,
-    oneofs: true,
-});
-
-var transferApiProto = loadPackageDefinition(transferApiPackageDefinition)
-const TransferService = get(transferApiProto, "org.apache.airavata.mft.api.service.MFTTransferService");
-const TransferServiceClient = new TransferService("localhost:7003", ChannelCredentials.createInsecure());
+const transferApiProto = loadProto(TRANSFER_API_PROTO_PATH);
+const TransferService = get(transferApiProto, 'org.apache.airavata.mft.api.service.MFTTransferService');
+const TransferServiceClient = new TransferService('localhost:7003', ChannelCredentials.createInsecure());
 
 
 app.use(cors());
